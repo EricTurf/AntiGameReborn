@@ -981,6 +981,10 @@ AGO.Fleet1 = {
 
         function h(a) {
             d.ships = 0;
+            // Hack to add all pathfinders when sending an expo
+            if (a.position === 16) {
+                a = { ...a, 219: g['219'] };
+            }
             OBJ.iterate(AGO.Item.Ship,
                 function (b) {
                     if ("212" !== b) {
