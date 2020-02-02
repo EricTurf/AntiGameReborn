@@ -553,8 +553,18 @@ AGO.Ogame = {
             ) * (c / 10 + 1)
         ) * AGO.Uni.globalDeuteriumSaveFactor) : 0
     }, getShipCapacity: function (a) {
-        let capacity = "210" === a && AGO.Uni.probeCargo ? AGO.Uni.probeCargo : AGO.Item[a].capacity;
-        return Math.round(capacity * (1 + (AGO.Units.get("114") || 0) * (AGO.Uni.cargoHyperspaceTechMultiplier / 100)));
+        const CARGO_IDS = ["202", "203"];
+        
+        const baseCapacity = "210" === a && AGO.Uni.probeCargo ? AGO.Uni.probeCargo : AGO.Item[a].capacity;
+
+        let collectorBonus = 0;
+        const hyperspaceBonus = baseCapacity * ((AGO.Units.get("114") || 0) * (AGO.Uni.cargoHyperspaceTechMultiplier / 100));
+
+        if (CARGO_IDS.includes(a) && AGO.Option.is("isCollector")) {
+            collectorBonus = baseCapacity * 0.25;     
+        }        
+
+        return Math.round(baseCapacity + collectorBonus + hyperspaceBonus);
     }, getShipSpeed: function (a) {
         AGO.Ogame.initShipSpeed && (AGO.Ogame.initShipSpeed(), AGO.Ogame.initShipSpeed = null);
         return AGO.Item[a].speed

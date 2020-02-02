@@ -168,6 +168,20 @@ AGO.Init = {
 
                 AGO.App.hasMCO = DOM.query("#characterclass") && true;
                 AGO.Option.set("isVersion7", AGO.App.isVersion7);
+                
+                const CLASSES = [ 
+                    { class: "Collector", id: "miner" },
+                    { class: "Discoverer", id: "explorer" },
+                    { class: "General", id: "warrior" }
+                ];
+
+                const characterClassNodeClassList = [...DOM.query(".characterclass").classList];
+                
+                CLASSES.forEach(c => {
+                    if (characterClassNodeClassList.includes(c.id)) {
+                        AGO.Option.set(`is${c.class}`, true);
+                    }
+                });
 
                 PAGE = AGO.Page = AGO[AGO.App.Page];
 
