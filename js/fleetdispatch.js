@@ -983,8 +983,6 @@ AGO.Fleet1 = {
             d.ships = 0;
             
             if (a.position === 16) {
-                let pathFinders = g['219']
-                
                 const currentExpo = AGO.Fleet.Get("Current", "expos");
                 const totalExpoSlots = AGO.Fleet.Get("Current", "exposSlots");
                 const freeSlots = totalExpoSlots - currentExpo;
@@ -992,11 +990,10 @@ AGO.Fleet1 = {
                 // If on a moon, splits the amount of pathfinders to send
                 // Don't split if only 1 slot left(last slot so send all)
                 if (d.moonName && freeSlots > 1) {
-                    pathFinders = Math.floor(pathFinders / freeSlots);
                 }
                 
                 // Hack to add all pathfinders when sending an expo
-                a = { ...a, 219: pathFinders };
+                a = { ...a, 219: 1 };
             }
             
             
