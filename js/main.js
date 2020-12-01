@@ -1,10 +1,8 @@
 const AGO = {};
 
 const getProperTransportPath = () => {
-    if(AGO.Uni.path.includes("?page=fleetdispatch")) {
-        console.log("Bad path detected... Fixing");
-
-        return `${AGO.Uni.path}`.replace("?page=fleetdispatch", "?page=ingame&component=fleetdispatch")
+    if(!AGO.Uni.path.includes("?page=ingame")) {
+            return `${AGO.Uni.path}ingame&component=`
     }
 
     return AGO.Uni.path;
