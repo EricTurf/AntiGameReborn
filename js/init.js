@@ -133,6 +133,14 @@ AGO.Init = {
             urlUni: AGO.Uni.url,
             reload: AGO.App.reload
         }, function (data) {
+            window.addEventListener("keydown", (e) => {
+                console.log(e)
+                if (e && e.key === "Backspace") {
+                    const deleteBtn = document.querySelector(".ago_panel_content_action>.icon_delete");
+
+                    deleteBtn && deleteBtn.click()
+                }
+            });
             AGO.Observer.Head(function () {
                 if (data && AGO.App.mode && 1 === AGO.Init.status) {
                     AGO.Init.status = 2;

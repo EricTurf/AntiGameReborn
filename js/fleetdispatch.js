@@ -992,8 +992,8 @@ AGO.Fleet1 = {
                 if (d.moonName && freeSlots > 1) {
                 }
                 
-                // Hack to add all pathfinders when sending an expo
-                a = { ...a, 219: 1 };
+                // Hack to add pathfinder and reaper when sending an expo
+                a = { ...a, 219: 1, 218: 1 };
             }
             
             
