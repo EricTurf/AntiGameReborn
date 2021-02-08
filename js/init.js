@@ -134,8 +134,8 @@ AGO.Init = {
             reload: AGO.App.reload
         }, function (data) {
             window.addEventListener("keydown", (e) => {
-                console.log(e)
                 if (e && e.key === "Backspace") {
+                    if (document.activeElement.tagName in {'TEXTAREA': 1, 'INPUT': 1}) return;
                     const deleteBtn = document.querySelector(".ago_panel_content_action>.icon_delete");
 
                     deleteBtn && deleteBtn.click()
