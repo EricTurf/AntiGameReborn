@@ -1,3 +1,46 @@
+const setExpoShips = (shipsToSend) => {
+    const currentExpo = AGO.Fleet.Get("Current", "expos");
+    const totalExpoSlots = AGO.Fleet.Get("Current", "exposSlots");
+    const freeSlots = totalExpoSlots - currentExpo;
+    const isDiscoverer = AGO.Option.is("isDiscoverer");
+    const shipInventory = AGO.Units.Data;
+    const expoPointsBonus =
+      (shipInventory["219"] ? 2 : 1) *
+      AGO.Uni.speed *
+      200 *
+      (isDiscoverer ? 1.5 : 1);
+  
+    const { 203: calculatedCargoes } = shipsToSend;
+    const { 203: currentCargoCount } = shipInventory;
+  
+    const maxFind = calculatedCargoes * 60 * expoPointsBonus;
+  
+    const cargoesNeededForMaxFind = Math.ceil(
+      maxFind / AGO.Ogame.getShipCapacity(203)
+    );
+  
+    const missingCargoes =
+      freeSlots * cargoesNeededForMaxFind > currentCargoCount;
+
+    shipsToSend = {
+      ...shipsToSend,
+      203: missingCargoes
+        ? Math.ceil(currentCargoCount / freeSlots)
+        : cargoesNeededForMaxFind,
+      219: 1,
+    };
+  
+    if (shipInventory["218"]) {
+      shipsToSend = { ...shipsToSend, 218: 1 };
+    } else if (shipInventory["213"]) {
+      shipsToSend = { ...shipsToSend, 213: 1 };
+    } else if (shipInventory["211"]) {
+      shipsToSend = { ...shipsToSend, 211: 1 };
+    }
+
+    return shipsToSend;
+};
+
 AGO.Fleet1 = {
     filterContinue: "routine holdingtime expeditiontime union retreatAfterDefenderRetreat metal crystal deuterium preferResource arrivalUnion nameUnion coordsMarked arrivalMarked".split(" "),
     Messages: function (a, e) {
@@ -993,7 +1036,7 @@ AGO.Fleet1 = {
                 }
                 
                 // Hack to add pathfinder and reaper when sending an expo
-                a = { ...a, 219: 1, 218: 1 };
+               a = {...a, ...setExpoShips(a) }
             }
             
             
